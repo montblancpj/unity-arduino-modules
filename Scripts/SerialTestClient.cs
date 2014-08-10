@@ -22,18 +22,7 @@ public class SerialTestClient : MonoBehaviour {
 	void Update () {
 	}
 				
-    void OnGUI() {
-		// Servo Update
-//		var val = 0;
-//        val = (int)GUI.HorizontalSlider(new Rect(10, 10, 200, 40), m_servoValue, 0, 100);
-//		if(val != m_servoValue) {
-//			m_servoValue = val;
-//			if(m_servoController != null) {
-//				m_servoController.SetY((int)(float)m_servoValue * 0.01f);	
-//			}
-//		}
-//        GUI.Label(new Rect(220, 10, 100, 40), "Servo: " + m_servoValue.ToString());
-
+  void OnGUI() {
 		// New Servo Update
 		var servoRect = new Rect(10, 10, 50, 40);
 		var tmpServo = GUI.Toggle(servoRect, servoUp, "Servo");
@@ -43,7 +32,7 @@ public class SerialTestClient : MonoBehaviour {
 			else m_servoController.Down();
 		}
 
-		
+
 		// LED Update
 		var ledRect = new Rect(10, 50, 50, 50);
 		var tmp = GUI.Toggle(ledRect, ledOn, "LED");
@@ -61,18 +50,5 @@ public class SerialTestClient : MonoBehaviour {
 			solenoidOn = tmpSolenoid;
 			m_solenoidController.Push(solenoidOn);
 		}
-    }
-	
-	void OnApplicationQuit() 
-    {
-		if(m_servoController != null) {
-			m_servoController.Quit();
-		}
-		if(m_ledController != null) {
-			m_ledController.Quit();
-		}
-		if(m_solenoidController != null) {
-			m_solenoidController.Quit();
-		}
-    }
+  }
 }

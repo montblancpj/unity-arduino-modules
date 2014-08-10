@@ -8,14 +8,18 @@ public class ServoController {
 
 	static private ServoController s_instance = null;
 
-	
 	private SerialHandler m_handler = null;
-	
+
 	private ServoController()
 	{
-		m_handler = SerialHandler.GetSerialHandler(ArduinoType.UNO);
+    var obj = GameObject.Find("Arduino");
+    if(obj) {
+      m_handler = obj.GetComponent<SerialHandler>();
+    } else {
+      Debug.LogError("Arduino Serial Object is not found in this scene.");
+    }
 	}
-	
+
 	static public ServoController Instance 
 	{
 		get 
@@ -39,14 +43,6 @@ public class ServoController {
 		if(m_handler != null) {
 			var data = m_handler.CreateSendData<int>(ServoHeader, MaxDeg);
 			m_handler.SendData(data);
-		}
-	}
-	
-	public void Quit()
-	{
-		if(m_handler != null) {
-			m_handler.Stop();	
-			m_handler = null;
 		}
 	}
 }
