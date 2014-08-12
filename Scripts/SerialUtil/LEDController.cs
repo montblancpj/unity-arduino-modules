@@ -11,12 +11,12 @@ public class LEDController {
 	
 	private LEDController()
 	{
-    var obj = GameObject.Find("Arduino");
-    if(obj) {
-      m_handler = obj.GetComponent<SerialHandler>();
-    } else {
-      Debug.LogError("Arduino Serial Object is not found in this scene.");
-    }
+	    var obj = GameObject.Find("Arduino");
+	    if(obj) {
+	      m_handler = obj.GetComponent<SerialHandler>();
+	    } else {
+	      Debug.LogError("Arduino Serial Object is not found in this scene.");
+	    }
 	}
 
 	static public LEDController Instance 

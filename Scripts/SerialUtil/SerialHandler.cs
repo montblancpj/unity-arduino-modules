@@ -3,7 +3,6 @@ using System.Collections;
 using System.IO.Ports;
 
 public class SerialHandler : MonoBehaviour {
-  const string UnoPort = "/dev/tty.usbmodemfd121";
   const int BaudRate 	 = 9600;
   private SerialPort m_serial;
 
@@ -30,7 +29,10 @@ public class SerialHandler : MonoBehaviour {
 	}
 
   void Open() {
-    m_serial = new SerialPort(UnoPort, BaudRate, Parity.None, 8, StopBits.One);
+		var settingJson = Utilities.ReadJSON("Arduino/setting.json");
+    var port = settingJson["serial"]["name"];
+    var baudrate = settingJson["serial"]["baudrate"];
+    m_serial = new SerialPort(port, BaudRate, Parity.None, 8, StopBits.One);
     if(m_serial != null) {
       if(m_serial.IsOpen) {
         Debug.LogError("Failed to open Serial Port, already open!");
@@ -39,11 +41,11 @@ public class SerialHandler : MonoBehaviour {
         try	{
           // m_serial.DataReceived += OnSerialDataReceived;
           // m_serial.ErrorReceived += OnSerialErrorReceived;
+          Debug.Log("Try to open serial, " + port + ":" + baudrate);
           m_serial.Open();
           m_serial.DtrEnable = true;
           m_serial.RtsEnable = true;
           m_serial.ReadTimeout = 50;
-          Debug.Log("Open Serial port");
         }	catch(System.IO.IOException) {
           IOErrorHandler();
         }
