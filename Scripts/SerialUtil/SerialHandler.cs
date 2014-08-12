@@ -3,7 +3,6 @@ using System.Collections;
 using System.IO.Ports;
 
 public class SerialHandler : MonoBehaviour {
-  const int BaudRate 	 = 9600;
   private SerialPort m_serial;
 
   void Awake() {
