@@ -2,74 +2,79 @@
 using System.Collections;
 using System.IO.Ports;
 
-public class SerialHandler : MonoBehaviour {
-  private SerialPort m_serial;
+public class SerialHandler : MonoBehaviour
+{
+    private SerialPort m_serial;
 
-  void Awake() {
-    Debug.Log ("Awake");
-    Open();
-  }
-
-	void OnDestroy () {
-		Debug.Log ("OnDestroy");
-    Close();
-	}
-	
-	public void SendData(string data) {
-		try
-		{
-			Debug.Log(data);
-			m_serial.Write(data);
-		}
-		catch(System.IO.IOException)
-		{
-			IOErrorHandler();
-		}
-	}
-
-  void Open() {
-		var settingJson = Utilities.ReadJSON("Arduino/setting.json");
-    var port = settingJson["serial"]["name"];
-    var baudrate = settingJson["serial"]["baudrate"];
-    m_serial = new SerialPort(port, BaudRate, Parity.None, 8, StopBits.One);
-    if(m_serial != null) {
-      if(m_serial.IsOpen) {
-        Debug.LogError("Failed to open Serial Port, already open!");
-        m_serial.Close();
-      } else {
-        try	{
-          // m_serial.DataReceived += OnSerialDataReceived;
-          // m_serial.ErrorReceived += OnSerialErrorReceived;
-          Debug.Log("Try to open serial, " + port + ":" + baudrate);
-          m_serial.Open();
-          m_serial.DtrEnable = true;
-          m_serial.RtsEnable = true;
-          m_serial.ReadTimeout = 50;
-        }	catch(System.IO.IOException) {
-          IOErrorHandler();
-        }
-      }
+    void Awake()
+    {
+        // Debug.Log("Awake");
+        Open();
     }
 
-  }
+    void OnDestroy()
+    {
+        // Debug.Log("OnDestroy");
+        Close();
+    }
 
-	void Close() {
-		if(m_serial != null) {
-			Debug.Log("CLose Serial Port");
-			m_serial.Close();
-		}
-	}
+    public void SendData(string data)
+    {
+        try
+        {
+            // Debug.Log(data);
+            m_serial.Write(data);
+        }
+        catch (System.IO.IOException)
+        {
+            IOErrorHandler();
+        }
+    }
 
-	public string CreateSendData<T>(string header, T data)
-	{
-		return  header + data.ToString() + "\0";
-	}
+    void Open()
+    {
+        var settingJson = Utilities.ReadJSON("Arduino/setting.json");
+        var port = settingJson["serial"]["name"].ToString();
+        var baudrate = settingJson["serial"]["baudrate"].AsInt;
+        m_serial = new SerialPort(port, baudrate, Parity.None, 8, StopBits.One);
+        if (m_serial != null) {
+            if(m_serial.IsOpen) {
+                Debug.LogError("Failed to open Serial Port, already open!");
+                m_serial.Close();
+            } else {
+                try	{
+                    // m_serial.DataReceived += OnSerialDataReceived;
+                    // m_serial.ErrorReceived += OnSerialErrorReceived;
+                    Debug.Log("Try to open serial, " + port + ":" + baudrate);
+                    m_serial.Open();
+                    m_serial.DtrEnable = true;
+                    m_serial.RtsEnable = true;
+                    m_serial.ReadTimeout = 50;
+                } catch(System.IO.IOException) {
+                    IOErrorHandler();
+                }
+            }
+        }
+    }
 
-	void IOErrorHandler()
-	{
-		Debug.LogError("IOException!!!!");
-		Close();
-	}
+    void Close()
+    {
+        if (m_serial != null) {
+            // Debug.Log("Close Serial Port");
+            m_serial.Close();
+        }
+    }
+
+    public string CreateSendData<T>(string header, T data)
+    {
+        return header + data.ToString() + "\0";
+    }
+
+    void IOErrorHandler()
+    {
+        Debug.LogError("IOException!!!!");
+        Close();
+    }
 }
 
 //
@@ -83,11 +88,11 @@ public class SerialHandler : MonoBehaviour {
 //	const string UnoPort = "/dev/tty.usbmodemfd121";
 //	//	const string UnoPort = "/dev/tty.usbserial-A800ey7d";
 //	const int BaudRate 	 = 9600;
-//	
+//
 //	static private Dictionary<ArduinoType, SerialHandler> m_handlerDict = new Dictionary<ArduinoType, SerialHandler>();
-//	
+//
 //	private SerialPort 		m_serial;
-//	
+//
 //	private SerialHandler_obs(ArduinoType type)
 //	{
 //		switch(type)
@@ -101,25 +106,25 @@ public class SerialHandler : MonoBehaviour {
 //			m_serial = new SerialPort(UnoPort, BaudRate, Parity.None, 8, StopBits.One);
 //			break;
 //		}
-//		
+//
 //		Start();
 //	}
-//	
+//
 //	static public SerialHandler GetSerialHandler(ArduinoType type)
 //	{
 //		if(type != ArduinoType.DUEMILANOVE && type != ArduinoType.UNO) return null;
-//		
+//
 //		SerialHandler handler = null;
 //		if(!m_handlerDict.ContainsKey(type)) {
 //			handler = new SerialHandler(type);
 //			m_handlerDict.Add(type, handler);
 //		} else {
-//			handler = m_handlerDict[type];	
+//			handler = m_handlerDict[type];
 //		}
-//		
+//
 //		return handler;
 //	}
-//	
+//
 //	private void OnSerialDataReceived(object sender, SerialDataReceivedEventArgs e)
 //	{
 //		Debug.Log("OnSerialDataReceived");
@@ -129,18 +134,18 @@ public class SerialHandler : MonoBehaviour {
 //		string s = Encoding.GetEncoding("Shift_JIS").GetString(buf, 0, len);
 //		Debug.Log(s);
 //	}
-//	
+//
 //	private void OnSerialErrorReceived(object sender, SerialErrorReceivedEventArgs e)
 //	{
 //		Debug.Log("Serial port error: " + e.EventType.ToString ("G"));
 //	}
-//	
+//
 //	private void IOErrorHandler()
 //	{
 //		Debug.LogError("IOException!!!!");
 //		Stop();
 //	}
-//	
+//
 //	private void Start() {
 //		if(m_serial != null) {
 //			if(m_serial.IsOpen) {
@@ -164,20 +169,20 @@ public class SerialHandler : MonoBehaviour {
 //			}
 //		}
 //	}
-//	
-//	public void Stop() 
+//
+//	public void Stop()
 //	{
 //		if(m_serial != null) {
 //			Debug.Log("CLose Serial Port");
 //			m_serial.Close();
 //		}
 //	}
-//	
+//
 //	public string CreateSendData<T>(string header, T data)
 //	{
 //		return  header + data.ToString() + "\0";
 //	}
-//	
+//
 //	public void SendData(string data)
 //	{
 //		try
@@ -190,5 +195,5 @@ public class SerialHandler : MonoBehaviour {
 //			IOErrorHandler();
 //		}
 //	}
-//	
+//
 //}
