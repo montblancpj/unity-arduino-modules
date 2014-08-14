@@ -6,7 +6,7 @@ public class ServoController {
 
     private const string ServoHeader = "s";
     private const int MinDeg = 0;
-    private const int MaxDeg = 62;
+    private const int MaxDeg = 59;
 
     private SerialHandler m_handler = null;
     private float m_lastDeg = -1;
