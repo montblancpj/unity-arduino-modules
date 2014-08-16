@@ -6,7 +6,7 @@ public class ServoController {
 
     private const string ServoHeader = "s";
     private const int MinDeg = 0;
-    private const int MaxDeg = 59;
+    private const int MaxDeg = 62;
 
     private SerialHandler m_handler = null;
     private float m_lastDeg = -1;
@@ -39,6 +39,8 @@ public class ServoController {
     /// <param name="y">The y coordinate. 0.0 - 1.0</param>
     public void SetY(float y)
     {
+        y = y < 0f ? 0f : y;
+        y = y > 1f ? 1f : y;
         int deg = (int)(MaxDeg - (MaxDeg - MinDeg) * y);
         if(m_lastDeg != deg) {
             if(m_handler != null) {
