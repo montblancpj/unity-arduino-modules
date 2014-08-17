@@ -18,6 +18,8 @@ public class SerialHandler : MonoBehaviour
 
     public void SendData(string data)
     {
+		if (!m_serial.IsOpen) return;
+
         try
         {
             m_serial.Write(data);
