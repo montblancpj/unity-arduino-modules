@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SerialTestClient : MonoBehaviour {
     private ServoController   m_servoController;
-    private LEDController	  m_ledController;
+    private LEDController    m_ledController;
     private SolenoidController m_solenoidController;
 
     public int m_servoValue = 0;
@@ -15,10 +15,15 @@ public class SerialTestClient : MonoBehaviour {
         m_servoController = ServoController.Instance;
         m_ledController = LEDController.Instance;
         m_solenoidController = SolenoidController.Instance;
+        SerialHandler.OnTactSwitchDataReceived += onTactSwitchDataReceived;
     }
 
     // Update is called once per frame
     void Update () {
+    }
+
+    void onTactSwitchDataReceived(bool isOn) {
+        Debug.Log ("TactSwitch Status: " + isOn);
     }
 
     void OnGUI() {
