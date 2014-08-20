@@ -79,7 +79,7 @@ public class SerialHandler : MonoBehaviour
                 } catch(System.IO.IOException) {
                     IOErrorHandler();
                 } catch(System.Exception e) {
-                    IOErrorHandler();
+					Debug.LogError(e);
                 }
             }
         }
