@@ -29,7 +29,7 @@ public class SerialTestClient : MonoBehaviour {
     void OnGUI() {
         // Servo Update
         GUI.Label(new Rect(10, 10, 100, 20), "Servo");
-        var servoRect = new Rect(20, 10, 50, 40);
+        //var servoRect = new Rect(20, 10, 50, 40);
         var val = (int)GUI.HorizontalSlider(new Rect(10, 30, 200, 40), m_servoValue, 0, 100);
         if(val != m_servoValue) {
             m_servoValue = val;
